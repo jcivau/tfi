@@ -21,7 +21,6 @@ String data;
 
 void setup() { 
 	Serial.begin(115200);
-  pinMode(ledAzul,OUTPUT);
 
 	if (Ethernet.begin(mac) == 0) {
 		Serial.println("Failed to configure Ethernet using DHCP"); 
@@ -37,7 +36,7 @@ void setup() {
 }
 
 void loop(){
-  
+  digitalWrite(ledAzul, HIGH);
   //Serial.print("hola");
   
 	currentMillis = millis();
@@ -51,10 +50,9 @@ void loop(){
   Serial.println(t);
   Serial.print("Humedad: ");
   Serial.println(h);
-	data = "temp1="  + (String)t + "&&hum1=" + (String)h;
-  
+	data = "temp1=" + (String)t + "&hum1=" + (String)h;
 
-	/*if (client.connect("www.tfi.plazacontenidos.com",80)) { // REPLACE WITH YOUR SERVER ADDRESS
+	if (client.connect("www.tfi.plazacontenidos.com",80)) { // REPLACE WITH YOUR SERVER ADDRESS
 		client.println("POST /add.php HTTP/1.1"); 
 		client.println("Host: tfi.plazacontenidos.com"); // SERVER ADDRESS HERE TOO
 		client.println("Content-Type: application/x-www-form-urlencoded"); 
@@ -62,25 +60,8 @@ void loop(){
 		client.println(data.length()); 
 		client.println(); 
 		client.print(data);
-    Serial.println(data.length());
-    Serial.println("Paso el insert");
-	}*/
-
-  if (client.connect("www.tfi.plazacontenidos.com",80)) {
-    
-    client.print( "/add.php?");
-    client.print(data);
-
-    client.print( " HTTP/1.0");
-    client.print(" User-Agent: Arduino 1.0");
-    client.println();
-
-digitalWrite(ledAzul, HIGH);
-Serial.println(data);
-Serial.println("Estoy adentro");
-  }
-  
-  
+    pinMode(ledAzul,OUTPUT); 
+	} 
 
 	if (client.connected()) { 
 		client.stop();	// DISCONNECT FROM THE SERVER
